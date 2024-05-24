@@ -1,0 +1,30 @@
+<div class="container-fluid vh-100 p-3">
+  <div class="d-flex align-items-center justify-content-between">
+    <h5>{{ quiz$?.quiz?.title ?? "" }}</h5>
+
+    <button class="btn btn-dark" (click)="createQuestion()">
+      <i class="fa-solid fa-plus me-3"></i>
+      Add Question
+    </button>
+  </div>
+  <div class="container h-100 overflow-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Question</th>
+          <th scope="col">Answer</th>
+          <th scope="col">Choices</th>
+          <th scope="col">Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let question of quiz$?.questions ?? []">
+          <th scope="row">{{ question.question }}</th>
+          <td>{{ question.answer }}</td>
+          <td>{{ question.choices.toString() }}</td>
+          <td>{{ question.points }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
