@@ -1,0 +1,7 @@
+.quiz-card {
+  transition: box-shadow 0.3s;
+}
+
+.quiz-card:hover {
+  box-shadow: 0 0 10px rgba(122, 122, 122, 0.2); /* Adjust shadow size and color as needed */
+}

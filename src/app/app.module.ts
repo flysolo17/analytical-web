@@ -9,18 +9,35 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 
 import { ViewQuizComponent } from './administrator/view-quiz/view-quiz.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModule,
+  NgbPagination,
+  NgbPaginationConfig,
+} from '@ng-bootstrap/ng-bootstrap';
 import { CreateQuizComponent } from './administrator/create-quiz/create-quiz.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CreateQuestionComponent } from './presentation/create-question/create-question.component';
-import { RegisterComponent } from './presentation/auth/register/register.component';
-import { LoginComponent } from './presentation/auth/login/login.component';
-import { AdministratorModule } from './administrator/administrator.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import {
   BaseChartDirective,
   NgChartsConfiguration,
   NgChartsModule,
 } from 'ng2-charts';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ToastrModule } from 'ngx-toastr';
+import { PrimaryButtonComponent } from './custom/primary-button/primary-button.component';
+import { HttpClientModule } from '@angular/common/http';
+
+import { environment } from '../environments/environment';
+
+import { CreateQuestionComponent } from './administrator/create-question/create-question.component';
+import { EditProfileComponent } from './auth/edit-profile/edit-profile.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { LoginComponent } from './auth/login/login.component';
+import { AdministratorModule } from './administrator/administrator.module';
+import { TodoComponent } from './todo/todo.component';
 
 @NgModule({
   declarations: [
@@ -31,26 +48,26 @@ import {
     CreateQuizComponent,
     CreateQuestionComponent,
     RegisterComponent,
+    PrimaryButtonComponent,
+    ForgotPasswordComponent,
+    EditProfileComponent,
+    TodoComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgChartsModule,
+    FormsModule,
+
     NgbModule,
+    HttpClientModule,
     ReactiveFormsModule,
     AdministratorModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
-    provideFirebaseApp(() =>
-      initializeApp({
-        projectId: 'analytical-8e3db',
-        appId: '1:434635194953:web:cc095a538c1c1942137598',
-        storageBucket: 'analytical-8e3db.appspot.com',
-        apiKey: 'AIzaSyC4sV9VjdvTxEDJyWg9audnG89FW67PXzA',
-        authDomain: 'analytical-8e3db.firebaseapp.com',
-        messagingSenderId: '434635194953',
-      })
-    ),
+    provideFirebaseApp(() => initializeApp(environment)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),

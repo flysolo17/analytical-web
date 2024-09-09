@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { QuizService } from '../../services/quiz.service';
-import { Quiz, QuizType, Subjects } from '../../models/Quiz';
+import { Quiz } from '../../models/Quiz';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-quiz',
@@ -15,13 +16,18 @@ export class CreateQuizComponent {
 
   quizForm$: FormGroup;
 
-  constructor(private fb: FormBuilder, private quizService: QuizService) {
+  constructor(
+    private fb: FormBuilder,
+    private quizService: QuizService,
+    private toastr: ToastrService
+  ) {
     this.quizForm$ = fb.group({
       cover: [null],
       title: ['', Validators.required],
       desc: ['', Validators.required],
-      subject: ['', Validators.required],
-      timer: [0, Validators.required],
+      subject: ['MATH', Validators.required],
+      category: ['REBUS_PUZZLE', Validators.required],
+      levels: [5, Validators.required],
     });
   }
 
@@ -38,16 +44,25 @@ export class CreateQuizComponent {
 
   onSubmit() {
     if (this.quizForm$.valid) {
-      const subject = this.quizForm$.get('subject')?.value ?? '';
+      const subject: 'MATH' | 'ENGLISH' =
+        this.quizForm$.get('subject')?.value ?? 'MATH';
+      const category:
+        | 'REBUS_PUZZLE'
+        | 'RIDDLES'
+        | 'WORD_PUZZLE'
+        | 'MATH_LOGIC_PUZZLE' =
+        this.quizForm$.get('category')?.value ?? 'REBUS_PUZZLE';
+      const levels: number = +this.quizForm$.get('levels')?.value || 10;
       let quiz: Quiz = {
         id: '',
         title: this.quizForm$.get('title')?.value ?? '',
         desc: this.quizForm$.get('desc')?.value ?? '',
         cover_photo: '',
-        subject: subject === 'MATH' ? Subjects.MATH : Subjects.ENGLISH,
-        type: QuizType.MULTIPLE_CHOICE,
+        subject: subject,
+        category: category,
+        levels: levels,
         createdAt: new Date(),
-        timer: +this.quizForm$.get('timer')?.value || 0,
+        visible: false,
       };
 
       if (this.FOR_UPLOAD !== null) {
@@ -72,9 +87,9 @@ export class CreateQuizComponent {
     this.quizService
       .createQuiz(quiz)
       .then((data) => {
-        alert('Success');
+        this.toastr.success('Successfully Created');
+        this.activeModal.close(data);
       })
-      .catch((err) => alert(err['message']))
-      .finally(() => this.activeModal.close());
+      .catch((err) => this.toastr.success(err['message']));
   }
 }

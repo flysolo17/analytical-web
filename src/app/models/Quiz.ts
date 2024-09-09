@@ -1,24 +1,29 @@
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { Questions } from './Questions';
 
 export interface Quiz {
   id: string;
   title: string;
   desc: string;
   cover_photo: string;
-  subject: Subjects;
-  type: QuizType;
-  timer: number;
+  subject: 'MATH' | 'ENGLISH';
+  category: Questions['type'];
+  levels: number;
+  visible: boolean;
   createdAt: Date;
 }
 
-export enum QuizType {
-  MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-}
+// export enum Categories {
+//   REBUS_PUZZLE = 'REBUS_PUZZLE',
+//   RIDDLES = 'RIDDLES',
+//   WORD_PUZZLE = 'WORD PUZZLE',
+//   MATH_LOGIC_PUZZLE = 'MATH LOGIC PUZZLE',
+// }
 
-export enum Subjects {
-  MATH = 'MATH',
-  ENGLISH = 'ENGLISH',
-}
+// export enum Subjects {
+//   MATH = 'MATH',
+//   ENGLISH = 'ENGLISH',
+// }
 export const quizConverter = {
   toFirestore: (data: Quiz) => data,
   fromFirestore: (snap: QueryDocumentSnapshot) => {

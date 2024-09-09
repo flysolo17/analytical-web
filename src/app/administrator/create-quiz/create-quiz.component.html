@@ -1,10 +1,10 @@
-<div class="modal-header">
-  <h4 class="modal-title">Create Quiz</h4>
+<div class="modal-header border-0">
+  <h5 class="modal-title">Create Quiz</h5>
   <button
     type="button"
     class="btn-close"
     aria-label="Close"
-    (click)="activeModal.dismiss('Cross click')"
+    (click)="activeModal.dismiss(null)"
   ></button>
 </div>
 <div class="modal-body">
@@ -20,15 +20,34 @@
       />
       <label for="cover">Cover Photo</label>
     </div>
-    <div class="form-floating mb-3">
-      <input
-        type="text"
-        class="form-control"
-        id="title"
-        formControlName="title"
-      />
-      <label for="title">Title</label>
+    <div class="row">
+      <div class="col">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            formControlName="title"
+          />
+          <label for="title">Title</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating mb-3">
+          <select
+            class="form-select"
+            id="subject"
+            formControlName="subject"
+            aria-label="Floating label select example"
+          >
+            <option selected value="MATH">MATH</option>
+            <option value="ENGLISH">ENGLISH</option>
+          </select>
+          <label for="subject">Subject</label>
+        </div>
+      </div>
     </div>
+
     <div class="form-floating mb-3">
       <textarea
         formControlName="desc"
@@ -40,35 +59,41 @@
       <label for="description">Description</label>
     </div>
 
-    <div class="form-floating mb-3">
-      <select
-        class="form-select"
-        id="subject"
-        formControlName="subject"
-        aria-label="Floating label select example"
-      >
-        <option selected value="MATH">MATH</option>
-        <option value="ENGLISH">ENGLISH</option>
-      </select>
-      <label for="subject">Subject</label>
-    </div>
-
-    <div class="form-floating">
-      <input
-        type="number"
-        class="form-control"
-        id="timer"
-        formControlName="timer"
-      />
-      <label for="timer">Timer</label>
-      <div class="form-text" id="basic-addon4">Timer in minutes</div>
+    <div class="row">
+      <div class="col-8">
+        <div class="form-floating mb-3">
+          <select
+            class="form-select"
+            id="category"
+            formControlName="category"
+            aria-label="Floating label select example"
+          >
+            <option selected value="REBUS_PUZZLE">REBUS PUZZLE</option>
+            <option value="RIDDLES">RIDDLES</option>
+            <option value="WORD_PUZZLE">WORD PUZZLE</option>
+            <option value="MATH_LOGIC_PUZZLE">MATH LOGIC PUZZLE</option>
+          </select>
+          <label for="category">Category</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating">
+          <input
+            type="number"
+            class="form-control"
+            id="levels"
+            formControlName="levels"
+          />
+          <label for="levels">Levels</label>
+        </div>
+      </div>
     </div>
 
     <div class="modal-footer">
       <button
         type="button"
         class="btn btn-outline-dark"
-        (click)="activeModal.close('Close click')"
+        (click)="activeModal.close(null)"
       >
         Cancel
       </button>

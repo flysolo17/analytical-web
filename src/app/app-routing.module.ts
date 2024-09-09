@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ViewQuizComponent } from './administrator/view-quiz/view-quiz.component';
-import { LoginComponent } from './presentation/auth/login/login.component';
+
 import { MainComponent } from './administrator/main/main.component';
+import { LoginComponent } from './auth/login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
