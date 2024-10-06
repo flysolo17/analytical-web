@@ -1,5 +1,5 @@
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
-import { Questions } from './Questions';
+import { Questions } from '../Questions';
 
 export interface Quiz {
   id: string;
@@ -7,6 +7,7 @@ export interface Quiz {
   desc: string;
   cover_photo: string;
   subject: 'MATH' | 'ENGLISH';
+  schoolLevel: 'SHS' | 'JHS';
   category: Questions['type'];
   levels: number;
   visible: boolean;

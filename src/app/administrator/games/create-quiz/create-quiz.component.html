@@ -60,7 +60,7 @@
     </div>
 
     <div class="row">
-      <div class="col-8">
+      <div class="col-4">
         <div class="form-floating mb-3">
           <select
             class="form-select"
@@ -76,7 +76,22 @@
           <label for="category">Category</label>
         </div>
       </div>
-      <div class="col">
+      <div class="col-4">
+        <div class="form-floating mb-3">
+          <select
+            class="form-select"
+            id="schoolLevel"
+            formControlName="schoolLevel"
+            aria-label="Floating label select example"
+          >
+            <option selected value="JHS">JHS</option>
+            <option value="JHS">JHS</option>
+            <option value="SHS">SHS</option>
+          </select>
+          <label for="schoolLevel">School Level</label>
+        </div>
+      </div>
+      <div class="col-4">
         <div class="form-floating">
           <input
             type="number"

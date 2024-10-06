@@ -14,7 +14,7 @@ import {
   where,
   writeBatch,
 } from '@angular/fire/firestore';
-import { Quiz, quizConverter } from '../models/Quiz';
+
 import { v4 as uuidv4 } from 'uuid';
 import {
   Storage,
@@ -24,8 +24,9 @@ import {
   uploadBytes,
 } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { Levels } from '../models/Levels';
+import { Levels } from '../models/quiz/Levels';
 import { LEVELS_COLLECTION } from './levels.service';
+import { Quiz, quizConverter } from '../models/quiz/Quiz';
 export const SUBMISSIONS_COLLECTION = 'submissions';
 export const QUIZ_COLLECTION = 'quiz';
 @Injectable({

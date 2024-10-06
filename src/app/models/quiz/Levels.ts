@@ -1,4 +1,4 @@
-import { Questions } from './Questions';
+import { Questions } from '../Questions';
 
 export interface Levels {
   id: string;

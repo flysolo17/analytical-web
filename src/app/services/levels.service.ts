@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 import { Questions, questionConverter } from '../models/Questions';
 import { QUESTION_COLLECTION } from './question.service';
 import { QUIZ_COLLECTION, SUBMISSIONS_COLLECTION } from './quiz.service';
-import { Levels } from '../models/Levels';
+import { Levels } from '../models/quiz/Levels';
 import { v4 as uuidv4 } from 'uuid';
 export const LEVELS_COLLECTION = 'levels';
 

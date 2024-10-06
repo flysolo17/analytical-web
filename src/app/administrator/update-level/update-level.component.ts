@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { Levels } from '../../models/Levels';
+import { Levels } from '../../models/quiz/Levels';
 import { LevelsService } from '../../services/levels.service';
 
 @Component({

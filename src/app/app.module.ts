@@ -8,13 +8,13 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 
-import { ViewQuizComponent } from './administrator/view-quiz/view-quiz.component';
+import { ViewQuizComponent } from './administrator/games/view-quiz/view-quiz.component';
 import {
   NgbModule,
   NgbPagination,
   NgbPaginationConfig,
 } from '@ng-bootstrap/ng-bootstrap';
-import { CreateQuizComponent } from './administrator/create-quiz/create-quiz.component';
+import { CreateQuizComponent } from './administrator/games/create-quiz/create-quiz.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
@@ -26,18 +26,19 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
-import { PrimaryButtonComponent } from './custom/primary-button/primary-button.component';
+
 import { HttpClientModule } from '@angular/common/http';
 
 import { environment } from '../environments/environment';
 
-import { CreateQuestionComponent } from './administrator/create-question/create-question.component';
+import { CreateQuestionComponent } from './administrator/questions/create-question/create-question.component';
 import { EditProfileComponent } from './auth/edit-profile/edit-profile.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AdministratorModule } from './administrator/administrator.module';
-import { TodoComponent } from './todo/todo.component';
+import { ImagePickerComponent } from './custom/image-picker/image-picker.component';
+import { PrimaryButtonComponent } from './custom/primary-button/primary-button.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +51,8 @@ import { TodoComponent } from './todo/todo.component';
     RegisterComponent,
     PrimaryButtonComponent,
     ForgotPasswordComponent,
+    ImagePickerComponent,
     EditProfileComponent,
-    TodoComponent,
   ],
   imports: [
     BrowserModule,

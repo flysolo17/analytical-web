@@ -9,3 +9,7 @@ export function getNumberInString(str: string): number | null {
   }
   return null;
 }
+
+export function displayFullname(first: string, middle: string, last: string) {
+  return `${first} ${middle[0]}. ${last}`;
+}

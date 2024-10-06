@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription, map } from 'rxjs';
-import { Quiz } from '../../models/Quiz';
+
 import { QuizService } from '../../services/quiz.service';
-import { CreateQuizComponent } from '../create-quiz/create-quiz.component';
+import { CreateQuizComponent } from './create-quiz/create-quiz.component';
 import { QuestionService } from '../../services/question.service';
 import { ToastrService } from 'ngx-toastr';
 import { Administrators } from '../../models/Administrator';

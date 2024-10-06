@@ -8,7 +8,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CreateQuestionComponent } from '../create-question/create-question.component';
+import { CreateQuestionComponent } from './create-question/create-question.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-questions',
@@ -17,43 +18,21 @@ import { CreateQuestionComponent } from '../create-question/create-question.comp
 })
 export class QuestionsComponent implements OnInit {
   modalService = inject(NgbModal);
-  questionsWithSettings$: QuestionsWithSettings | undefined;
-  questions$: Questions[] = [];
+
+  questions$: Observable<Questions[]> | undefined;
 
   page = 1;
   pageSize = 10;
   collectionSize = 0;
+
   constructor(
     private questionsService: QuestionService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService
   ) {}
-  ngOnInit(): void {
-    this.questionsService.getAllQuestionsWithSettings().subscribe((data) => {
-      this.questionsWithSettings$ = data;
-      this.collectionSize = data.questions.length;
-      this.refreshQuestions();
-    });
-  }
-  deleteQuestion(question: Questions) {
-    this.questionsService
-      .deleteQuestion(question)
-      .then((data) => {
-        this.toastr.success('Successfully Deleted');
-      })
-      .catch((err) => {
-        this.toastr.error(err['message']);
-      });
-  }
-  refreshQuestions() {
-    let all = this.questionsWithSettings$?.questions ?? [];
+  ngOnInit(): void {}
 
-    this.questions$ = all.slice(
-      (this.page - 1) * this.pageSize,
-      (this.page - 1) * this.pageSize + this.pageSize
-    );
-  }
   // loadMoreQuestion(start: number) {
   //   this.questionsService.loadMoreQuestion(start).then((data) => {
   //     this.questions$ = data;
@@ -67,14 +46,9 @@ export class QuestionsComponent implements OnInit {
   //   });
   // }
 
-  createQuestion() {
-    const modal = this.modalService.open(CreateQuestionComponent);
-    // const newQueryParams = { param1: 'value1', param2: 'value2' };
-
-    // this.router.navigate([], {
-    //   relativeTo: this.route,
-    //   queryParams: newQueryParams,
-    //   queryParamsHandling: 'merge',
-    // });
-  }
+  // createQuestion() {
+  //   const modal = this.modalService.open(CreateQuestionComponent, {
+  //     size: 'xl',
+  //   });
+  // }
 }

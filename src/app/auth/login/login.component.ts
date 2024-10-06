@@ -5,7 +5,6 @@ import { FirebaseError } from '@angular/fire/app';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
-import { Auth, authState } from '@angular/fire/auth';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { AuthService } from '../../services/auth.service';
@@ -86,6 +85,7 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
       });
   }
+
   forgotPassword(email: string) {
     this.authService
       .forgotPassword(email)

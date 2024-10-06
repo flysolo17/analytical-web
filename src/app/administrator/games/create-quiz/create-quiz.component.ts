@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { QuizService } from '../../services/quiz.service';
-import { Quiz } from '../../models/Quiz';
+import { QuizService } from '../../../services/quiz.service';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Quiz } from '../../../models/quiz/Quiz';
 
 @Component({
   selector: 'app-create-quiz',
@@ -26,6 +27,7 @@ export class CreateQuizComponent {
       title: ['', Validators.required],
       desc: ['', Validators.required],
       subject: ['MATH', Validators.required],
+      schoolLevel: ['JHS', Validators.required],
       category: ['REBUS_PUZZLE', Validators.required],
       levels: [5, Validators.required],
     });
@@ -63,6 +65,7 @@ export class CreateQuizComponent {
         levels: levels,
         createdAt: new Date(),
         visible: false,
+        schoolLevel: this.quizForm$.get('schoolLevel')?.value ?? 'JHS',
       };
 
       if (this.FOR_UPLOAD !== null) {

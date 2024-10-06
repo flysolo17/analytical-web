@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ViewQuizComponent } from './view-quiz/view-quiz.component';
+import { ViewQuizComponent } from './games/view-quiz/view-quiz.component';
 import { MainComponent } from './main/main.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 import { QuestionsComponent } from './questions/questions.component';
 import { ProfileComponent } from '../auth/profile/profile.component';
+import { StudentsComponent } from './students/students.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+  },
+  {
+    path: 'students',
+    component: StudentsComponent,
   },
   {
     path: 'leaderboard',

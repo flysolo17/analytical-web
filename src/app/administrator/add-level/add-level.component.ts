@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Levels } from '../../models/Levels';
+import { Levels } from '../../models/quiz/Levels';
 import {
   FormBuilder,
   FormControl,

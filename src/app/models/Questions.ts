@@ -2,7 +2,11 @@ import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 
 export interface Questions {
   id: string;
+  gameID: string;
+  levelID: string;
   question: string;
+  image: string | null;
+  hint: string;
   answer: string;
   choices: string[];
   type: 'REBUS_PUZZLE' | 'RIDDLES' | 'WORD_PUZZLE' | 'MATH_LOGIC_PUZZLE';

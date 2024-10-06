@@ -1,4 +1,4 @@
-import { Questions } from './Questions';
+import { Questions } from '../Questions';
 import { Quiz } from './Quiz';
 
 export interface QuizWithQuestions {
