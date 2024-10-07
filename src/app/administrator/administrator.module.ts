@@ -26,6 +26,10 @@ import { ProfileComponent } from '../auth/profile/profile.component';
 import { SubmissionsComponent } from './submissions/submissions.component';
 import { StudentsComponent } from './students/students.component';
 import { ViewQuestionComponent } from './questions/view-question/view-question.component';
+import { SubmissionsTableComponent } from './games/submissions-table/submissions-table.component';
+import { EditGameComponent } from './games/edit-game/edit-game.component';
+import { DeleteConfirmationComponent } from './games/delete-confirmation/delete-confirmation.component';
+import { QuestionsTableComponent } from './games/questions-table/questions-table.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,10 @@ import { ViewQuestionComponent } from './questions/view-question/view-question.c
     UpdateLevelComponent,
     StudentsComponent,
     ViewQuestionComponent,
+    SubmissionsTableComponent,
+    EditGameComponent,
+    DeleteConfirmationComponent,
+    QuestionsTableComponent,
   ],
   imports: [
     CommonModule,

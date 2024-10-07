@@ -14,6 +14,10 @@ import { Levels } from '../../../models/quiz/Levels';
 import { CreateQuestionComponent } from '../../questions/create-question/create-question.component';
 import { LevelsService } from '../../../services/levels.service';
 import { Questions } from '../../../models/Questions';
+import { StudentWithSubmissions } from '../../../models/students/StudentWithSubmissions';
+import { SubmissionsService } from '../../../services/submissions.service';
+import { SubmissionWithStudent } from '../../../models/submissions/SubmissionWithStudent';
+import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 
 export interface QuestionsWithLevels {
   question: Questions;
@@ -30,20 +34,24 @@ export class ViewQuizComponent implements OnInit {
   quiz$: Observable<Quiz> | undefined;
   levels$: Observable<Levels[]> | undefined;
   questions$: Observable<QuestionsWithLevels[]> | undefined;
-
+  submissionsWithStudent$: Observable<SubmissionWithStudent[]> = of([]);
   constructor(
     private route: ActivatedRoute,
     private quizService: QuizService,
     private levelService: LevelsService,
     private location: Location,
     private toastr: ToastrService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private submissionService: SubmissionsService
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.quizId = params['id'] ?? null;
       if (this.quizId !== null) {
+        this.submissionsWithStudent$ = this.submissionService
+          .getSubmissionsByQuiz(this.quizId)
+          .pipe(map((data) => data || []));
         this.quiz$ = this.quizService.getQuizById(this.quizId);
         this.levels$ = this.levelService.getLevels(this.quizId);
         this.questions$ = combineLatest([
@@ -66,19 +74,21 @@ export class ViewQuizComponent implements OnInit {
     });
   }
 
-  deleteQuiz(quizID: string, quizImage: string) {
-    this.quizService
-      .deleteQuiz(quizID, quizImage)
-      .then((data) => this.toastr.success('Successfully Deleted'))
-      .catch((err) => this.toastr.error(err['message']))
-      .finally(() => this.location.back());
+  deleteQuiz(quiz: Quiz) {
+    const modal = this.modalService.open(DeleteConfirmationComponent);
+    modal.componentInstance.message = `Are you sure you want to delete
+    ${quiz.title} ?`;
+    modal.result.then((data) => {
+      if (data === 'YES') {
+        this.quizService
+          .deleteQuiz(quiz.id, quiz.cover_photo)
+          .then((data) => this.toastr.success('Successfully Deleted'))
+          .catch((err) => this.toastr.error(err['message']))
+          .finally(() => this.location.back());
+      }
+    });
   }
-  deleteQuestion(question: Questions) {
-    this.questionService
-      .deleteQuestion(question)
-      .then((data) => this.toastr.success('successfully deleted'))
-      .catch((err) => this.toastr.error(err['message']));
-  }
+
   createQuestion(levels: Levels[]) {
     this.quiz$?.subscribe((data) => {
       const modal = this.modalService.open(CreateQuestionComponent, {

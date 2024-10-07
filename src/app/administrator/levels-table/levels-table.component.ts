@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddLevelComponent } from '../../administrator/add-level/add-level.component';
 import { UpdateLevelComponent } from '../../administrator/update-level/update-level.component';
+import { DeleteConfirmationComponent } from '../games/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-levels-table',
@@ -22,11 +23,17 @@ export class LevelsTableComponent implements OnInit {
     private toastr: ToastrService
   ) {}
   ngOnInit(): void {}
-  deleteLevel(quizID: string, levelID: string) {
-    this.levelService
-      .deleteLevel(quizID, levelID)
-      .then(() => this.toastr.success('Successfully Deleted'))
-      .catch((err) => this.toastr.error(err['message'].toString()));
+  deleteLevel(quizID: string, level: Levels) {
+    const modal = this.modalService.open(DeleteConfirmationComponent);
+    modal.componentInstance.message = `Are you sure you want to delete ${level.name}`;
+    modal.result.then((data) => {
+      if (data === 'YES') {
+        this.levelService
+          .deleteLevel(quizID, level.id)
+          .then(() => this.toastr.success('Successfully Deleted'))
+          .catch((err) => this.toastr.error(err['message'].toString()));
+      }
+    });
   }
   async addLevel(quizID: string) {
     if (this.levels) {

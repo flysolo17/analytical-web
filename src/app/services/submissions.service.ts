@@ -9,9 +9,10 @@ import {
   orderBy,
   query,
   updateDoc,
+  where,
   writeBatch,
 } from '@angular/fire/firestore';
-import { combineLatest, map, merge, Observable } from 'rxjs';
+import { combineLatest, map, merge, Observable, switchMap } from 'rxjs';
 import { StudentWithSubmissions } from '../models/students/StudentWithSubmissions';
 import { STUDENT_COLLECTION, StudentsService } from './students.service';
 import { studentConverter, Students } from '../models/students/Student';
@@ -119,5 +120,43 @@ export class SubmissionsService {
         )
         .subscribe();
     });
+  }
+
+  getSubmissionsByQuiz(quizID: string): Observable<SubmissionWithStudent[]> {
+    const submissionQuery = query(
+      collection(this.firestore, SUBMISSIONS_COLLECTIONS).withConverter(
+        submissionsConverter
+      ),
+      where('quizInfo.id', '==', quizID),
+      orderBy('createdAt', 'desc')
+    );
+
+    return collectionData(submissionQuery).pipe(
+      switchMap((submissions: Submissions[]) => {
+        const studentObservables = submissions.map(async (submission) => {
+          const sid = submission.studentID;
+          if (sid == null) {
+            return {
+              submission: submission,
+              students: null,
+            };
+          }
+
+          const studentDoc = await getDoc(
+            doc(this.firestore, STUDENT_COLLECTION, sid).withConverter(
+              studentConverter
+            )
+          );
+          const student = studentDoc.data() ?? null;
+
+          return {
+            submission: submission,
+            students: student,
+          } as SubmissionWithStudent;
+        });
+
+        return combineLatest(studentObservables);
+      })
+    );
   }
 }
