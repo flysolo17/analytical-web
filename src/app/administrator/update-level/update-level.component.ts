@@ -55,6 +55,7 @@ export class UpdateLevelComponent {
       questions: values.questions,
       points: values.points,
       timer: values.timer,
+      levelNumber: values.levelNumber,
     };
     this.saveUpdate(this.quizID, newLevel);
   }

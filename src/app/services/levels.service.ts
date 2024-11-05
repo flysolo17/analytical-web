@@ -34,10 +34,11 @@ export class LevelsService {
         this.firestore,
         `${QUIZ_COLLECTION}/${quizID}/${LEVELS_COLLECTION}`
       ),
-      orderBy('name', 'asc')
+      orderBy('levelNumber', 'asc')
     );
     return collectionData(q) as Observable<Levels[]>;
   }
+
   addLevels(quizID: string, level: Levels) {
     level.id = uuidv4();
     let batch = writeBatch(this.firestore);

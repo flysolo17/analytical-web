@@ -39,6 +39,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { AdministratorModule } from './administrator/administrator.module';
 import { ImagePickerComponent } from './custom/image-picker/image-picker.component';
 import { PrimaryButtonComponent } from './custom/primary-button/primary-button.component';
+import { ChangePasswordComponent } from './auth/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { PrimaryButtonComponent } from './custom/primary-button/primary-button.c
     ForgotPasswordComponent,
     ImagePickerComponent,
     EditProfileComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

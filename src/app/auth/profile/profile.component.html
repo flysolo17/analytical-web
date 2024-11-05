@@ -17,8 +17,12 @@
     <h5>{{ admin$?.name ?? "No Admin" }}</h5>
     <h6 class="text-muted">Administrator</h6>
     <div class="d-flex gap-3 p-3">
-      <button class="btn btn-md btn-outline-dark">Edit Profile</button>
-      <button class="btn btn-md btn-dark">Change Password</button>
+      <button class="btn btn-md btn-outline-dark" (click)="editProfile()">
+        Edit Profile
+      </button>
+      <button class="btn btn-md btn-dark" (click)="changePassword()">
+        Change Password
+      </button>
     </div>
   </div>
 </div>

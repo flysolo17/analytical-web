@@ -29,10 +29,10 @@ export class AddLevelComponent implements OnInit {
     private levelService: LevelsService
   ) {
     this.levelForm$ = fb.group({
-      name: new FormControl([null, Validators.required]),
-      questions: new FormControl([null, Validators.required]),
-      points: new FormControl([1, Validators.required]),
-      timer: new FormControl([null, Validators.required]),
+      name: new FormControl(null, [Validators.required]),
+      questions: new FormControl(null, [Validators.required]),
+      points: new FormControl(10, [Validators.required]),
+      timer: new FormControl(5, [Validators.required]),
     });
   }
   ngOnInit(): void {
@@ -57,6 +57,7 @@ export class AddLevelComponent implements OnInit {
       questions: values.questions,
       points: +values.points,
       timer: values.timer,
+      levelNumber: this.count + 1,
     };
     this.saveLevel(this.quizID, newLevel);
   }

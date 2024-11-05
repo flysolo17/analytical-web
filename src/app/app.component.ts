@@ -26,6 +26,8 @@ export class AppComponent {
       this.authService.setAdmin(data);
       if (data !== null) {
         this.router.navigate(['main']);
+      } else {
+        this.router.navigate(['login']);
       }
     });
   }

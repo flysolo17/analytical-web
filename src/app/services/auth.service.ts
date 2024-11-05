@@ -17,6 +17,7 @@ import {
   getDocs,
   limit,
   query,
+  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { signInWithEmailAndPassword } from '@firebase/auth';
@@ -73,20 +74,34 @@ export class AuthService {
   async changePassword(oldPassword: string, newPassword: string) {
     try {
       const user = this.auth.currentUser;
-      if (user) {
-        const credential = EmailAuthProvider.credential(
-          user.email || '',
-          oldPassword
+      if (!user) {
+        throw new Error(
+          'User is not authenticated. Please log in and try again.'
         );
-
-        let result = await reauthenticateWithCredential(user, credential);
-
-        return updatePassword(result.user, newPassword);
-      } else {
-        throw new Error('User not authenticated');
       }
-    } catch (error) {
-      throw new Error('Error changing password:');
+
+      const credential = EmailAuthProvider.credential(
+        user.email || '',
+        oldPassword
+      );
+      const result = await reauthenticateWithCredential(user, credential);
+
+      await updatePassword(result.user, newPassword);
+      return 'Password changed successfully.';
+    } catch (err: any) {
+      if (err['code'] === 'auth/wrong-password') {
+        throw new Error('The old password is incorrect. Please try again.');
+      } else if (err['code'] === 'auth/user-mismatch') {
+        throw new Error('User does not match the credentials provided.');
+      } else if (err['code'] === 'auth/network-request-failed') {
+        throw new Error(
+          'Network error. Please check your connection and try again.'
+        );
+      } else {
+        throw new Error(
+          'An error occurred while changing the password. Please try again later.'
+        );
+      }
     }
   }
   listenToAdmin(email: string): Observable<Administrators | null> {
@@ -106,5 +121,10 @@ export class AuthService {
         }
       })
     );
+  }
+  editAdminName(id: string, name: string) {
+    return updateDoc(doc(this.firestore, ADMINISTRATOR_COLLECTION, id), {
+      name: name,
+    });
   }
 }

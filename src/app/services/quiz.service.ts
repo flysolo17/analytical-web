@@ -55,6 +55,7 @@ export class QuizService {
         let level: Levels = {
           id: uuidv4(),
           name: 'Level ' + (i + 1),
+          levelNumber: i + 1,
           questions: 10,
           points: 1,
           timer: 2,
