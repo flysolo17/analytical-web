@@ -25,7 +25,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12">
+        <div class="col-6">
           <div class="box">
             <h5 class="title">Most Played Categories</h5>
             <canvas
@@ -38,6 +38,18 @@
           </div>
         </div>
         <div class="col-6">
+          <div class="box">
+            <h5 class="title">Average Score per game</h5>
+            <canvas
+              baseChart
+              [data]="barChartData"
+              [labels]="barChartData.labels"
+              [options]="barChartOptions"
+              [type]="barChartType"
+            ></canvas>
+          </div>
+        </div>
+        <div class="col-12">
           <div class="box">
             <div class="d-flex align-items-center justify-content-between">
               <h5 class="title">Top Students</h5>
@@ -63,19 +75,6 @@
             </ul>
           </div>
         </div>
-
-        <div class="col-6">
-          <div class="box">
-            <h5 class="title">Average Score per game</h5>
-            <canvas
-              baseChart
-              [data]="barChartData"
-              [labels]="barChartData.labels"
-              [options]="barChartOptions"
-              [type]="barChartType"
-            ></canvas>
-          </div>
-        </div>
       </div>
     </div>
     <div class="col-4">
@@ -95,14 +94,11 @@
                   submission?.profile || '../../../../assets/images/profile.jpg'
                 "
                 class="rounded-circle"
-                width="60px"
-                height="60px"
+                width="40px"
+                height="40px"
               />
               <div class="flex-grow-1 p-2">
                 <h6 class="p-0">{{ submission.name }}</h6>
-                <p class="p-0">
-                  {{ submission.gameName }} {{ submission.levelName }}
-                </p>
               </div>
               <h6 class="fw-bold text-success">+ {{ submission.earning }}</h6>
             </div>

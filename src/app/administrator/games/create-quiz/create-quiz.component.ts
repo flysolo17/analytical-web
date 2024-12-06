@@ -27,8 +27,8 @@ export class CreateQuizComponent {
       title: ['', Validators.required],
       desc: ['', Validators.required],
       subject: ['MATH', Validators.required],
-      schoolLevel: ['JHS', Validators.required],
-      category: ['REBUS_PUZZLE', Validators.required],
+
+      category: ['QUIZ_GAME', Validators.required],
       levels: [5, Validators.required],
     });
   }
@@ -49,11 +49,10 @@ export class CreateQuizComponent {
       const subject: 'MATH' | 'ENGLISH' =
         this.quizForm$.get('subject')?.value ?? 'MATH';
       const category:
-        | 'REBUS_PUZZLE'
-        | 'RIDDLES'
-        | 'WORD_PUZZLE'
-        | 'MATH_LOGIC_PUZZLE' =
-        this.quizForm$.get('category')?.value ?? 'REBUS_PUZZLE';
+        | 'PUZZLE_GAME'
+        | 'MEMORY_GAME'
+        | 'QUIZ_GAME'
+        | 'MATH_GAME' = this.quizForm$.get('category')?.value ?? 'PUZZLE_GAME';
       const levels: number = +this.quizForm$.get('levels')?.value || 10;
       let quiz: Quiz = {
         id: '',
@@ -65,7 +64,7 @@ export class CreateQuizComponent {
         levels: levels,
         createdAt: new Date(),
         visible: false,
-        schoolLevel: this.quizForm$.get('schoolLevel')?.value ?? 'JHS',
+        schoolLevel: 'SHS',
       };
 
       if (this.FOR_UPLOAD !== null) {

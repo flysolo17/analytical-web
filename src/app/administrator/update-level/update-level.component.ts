@@ -18,7 +18,7 @@ import { LevelsService } from '../../services/levels.service';
 export class UpdateLevelComponent {
   activeModal = inject(NgbActiveModal);
   @Input() quizID: string = '';
-  @Input() level: Levels | undefined;
+  @Input() level!: Levels;
 
   levelForm$: FormGroup;
 
@@ -50,12 +50,12 @@ export class UpdateLevelComponent {
     }
     let values = this.levelForm$.value;
     let newLevel: Levels = {
-      id: this.level?.id ?? '',
+      id: this.level.id,
       name: values.name,
       questions: values.questions,
       points: values.points,
       timer: values.timer,
-      levelNumber: values.levelNumber,
+      levelNumber: this.level.levelNumber,
     };
     this.saveUpdate(this.quizID, newLevel);
   }

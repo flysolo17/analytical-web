@@ -13,9 +13,10 @@ import {
   styleUrl: './image-picker.component.css',
 })
 export class ImagePickerComponent {
-  selectedImage: string | ArrayBuffer | null = null;
+  @Input() selectedImage: string | ArrayBuffer | null = null;
   @Output() onSelected = new EventEmitter<File>();
   @ViewChild('fileInput') fileInput!: ElementRef;
+
   isDragging = false;
   onDragOver(event: DragEvent) {
     event.preventDefault();

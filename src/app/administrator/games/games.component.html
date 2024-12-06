@@ -9,8 +9,8 @@
             height="50px"
           />
           <div class="">
-            <h5>{{ rebus$ | async }}</h5>
-            <p class="text-secondary">Rebus Puzzle</p>
+            <h5>{{ PUZZLE$ | async }}</h5>
+            <p class="text-secondary">Puzzle Game</p>
           </div>
         </div>
       </div>
@@ -24,8 +24,8 @@
             height="50px"
           />
           <div class="">
-            <h5>{{ riddles$ | async }}</h5>
-            <p class="text-secondary">Riddles</p>
+            <h5>{{ QUIZ$ | async }}</h5>
+            <p class="text-secondary">Quiz Puzzle</p>
           </div>
         </div>
       </div>
@@ -39,8 +39,8 @@
             height="50px"
           />
           <div class="">
-            <h5>{{ mathLogic$ | async }}</h5>
-            <p class="text-secondary">Math Logic</p>
+            <h5>{{ MATH$ | async }}</h5>
+            <p class="text-secondary">Math Game</p>
           </div>
         </div>
       </div>
@@ -55,16 +55,16 @@
             height="50px"
           />
           <div class="">
-            <h5>{{ wordPuzzle$ | async }}</h5>
+            <h5>{{ MEMORY$ | async }}</h5>
 
-            <p class="text-secondary">Word Puzzle</p>
+            <p class="text-secondary">Memory Game</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="box flex-grow-1">
+  <div class="bg-white rounded-4 p-3">
     <div class="d-flex align-items-center justify-content-between">
       <div class="input-group w-50">
         <input
@@ -86,8 +86,10 @@
             class="rounded"
           />
           <div class="p-3">
-            <h5>{{ quiz.title }}</h5>
-            <p class="text-muted fw-light">{{ quiz.desc }}</p>
+            <h6>{{ quiz.title }}</h6>
+            <p class="text-muted fw-normal multiline-ellipsis">
+              {{ quiz.desc }}
+            </p>
           </div>
         </div>
       </div>

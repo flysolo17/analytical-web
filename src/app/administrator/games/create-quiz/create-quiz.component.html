@@ -1,5 +1,5 @@
 <div class="modal-header border-0">
-  <h5 class="modal-title">Create Quiz</h5>
+  <h5 class="modal-title">Create Game</h5>
   <button
     type="button"
     class="btn-close"
@@ -60,7 +60,7 @@
     </div>
 
     <div class="row">
-      <div class="col-4">
+      <div class="col-6">
         <div class="form-floating mb-3">
           <select
             class="form-select"
@@ -68,30 +68,16 @@
             formControlName="category"
             aria-label="Floating label select example"
           >
-            <option selected value="REBUS_PUZZLE">REBUS PUZZLE</option>
-            <option value="RIDDLES">RIDDLES</option>
-            <option value="WORD_PUZZLE">WORD PUZZLE</option>
-            <option value="MATH_LOGIC_PUZZLE">MATH LOGIC PUZZLE</option>
+            <option selected value="QUIZ_GAME">QUIZ GAME</option>
+            <option value="PUZZLE_GAME">PUZZLE GAME</option>
+            <option value="MEMORY_GAME">MEMORY GAME</option>
+            <option value="MATH_GAME">MATH GAME</option>
           </select>
           <label for="category">Category</label>
         </div>
       </div>
-      <div class="col-4">
-        <div class="form-floating mb-3">
-          <select
-            class="form-select"
-            id="schoolLevel"
-            formControlName="schoolLevel"
-            aria-label="Floating label select example"
-          >
-            <option selected value="JHS">JHS</option>
-            <option value="JHS">JHS</option>
-            <option value="SHS">SHS</option>
-          </select>
-          <label for="schoolLevel">School Level</label>
-        </div>
-      </div>
-      <div class="col-4">
+
+      <div class="col-6">
         <div class="form-floating">
           <input
             type="number"

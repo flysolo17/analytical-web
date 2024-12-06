@@ -12,7 +12,16 @@ import {
   where,
   writeBatch,
 } from '@angular/fire/firestore';
-import { combineLatest, map, merge, Observable, switchMap } from 'rxjs';
+import {
+  combineLatest,
+  from,
+  map,
+  merge,
+  mergeMap,
+  Observable,
+  of,
+  switchMap,
+} from 'rxjs';
 import { StudentWithSubmissions } from '../models/students/StudentWithSubmissions';
 import { STUDENT_COLLECTION, StudentsService } from './students.service';
 import { studentConverter, Students } from '../models/students/Student';
@@ -87,39 +96,42 @@ export class SubmissionsService {
       ),
       orderBy('createdAt', 'desc')
     );
-    const submissions = collectionData(submissionQuery) as Observable<
-      Submissions[]
-    >;
 
-    return new Observable<SubmissionWithStudent[]>((observer) => {
-      submissions
-        .pipe(
-          map(async (data) => {
-            const submissionWithStudents: SubmissionWithStudent[] = [];
-            for (const e of data) {
-              const studentID = e.studentID ?? '';
-              const studentDoc = await getDoc(
-                doc(
-                  this.firestore,
-                  STUDENT_COLLECTION,
-                  studentID
-                ).withConverter(studentConverter)
-              );
-              const student = studentDoc.exists() ? studentDoc.data() : null;
+    return collectionData(submissionQuery).pipe(
+      switchMap((submissions: Submissions[]) => {
+        const studentObservables = submissions.map((submission) => {
+          const sid = submission.studentID;
 
-              if (student) {
-                submissionWithStudents.push({
-                  submission: e,
-                  students: student,
-                });
-              }
-            }
-            observer.next(submissionWithStudents);
-            observer.complete();
-          })
-        )
-        .subscribe();
-    });
+          // Check if sid is valid before querying Firestore
+          if (!sid) {
+            return of({
+              submission,
+              students: null, // Handle submissions without a valid studentID
+            } as SubmissionWithStudent);
+          }
+
+          // Fetch the student document
+          return from(
+            getDoc(
+              doc(this.firestore, STUDENT_COLLECTION, sid).withConverter(
+                studentConverter
+              )
+            )
+          ).pipe(
+            map((studentDoc) => {
+              const student = studentDoc.data() ?? null;
+              return {
+                submission,
+                students: student,
+              } as SubmissionWithStudent;
+            })
+          );
+        });
+
+        // Combine all observables into a single observable
+        return combineLatest(studentObservables);
+      })
+    );
   }
 
   getSubmissionsByQuiz(quizID: string): Observable<SubmissionWithStudent[]> {

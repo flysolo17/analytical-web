@@ -1,31 +1,29 @@
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-
-import { QuizService } from '../../../services/quiz.service';
-import { QuestionService } from '../../../services/question.service';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { Questions } from '../../../models/Questions';
-import { ToastrService } from 'ngx-toastr';
-import { ImagePickerComponent } from '../../../custom/image-picker/image-picker.component';
+import { NgbActiveModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Levels } from '../../../models/quiz/Levels';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
+  Subject,
+  OperatorFunction,
+  Observable,
   debounceTime,
   distinctUntilChanged,
   filter,
-  map,
   merge,
-  Observable,
-  OperatorFunction,
-  Subject,
+  map,
 } from 'rxjs';
-import { Levels } from '../../../models/quiz/Levels';
-import { Category } from '../../../models/submissions/Category';
+import { ToastrService } from 'ngx-toastr';
+import { QuestionService } from '../../../services/question.service';
 
 @Component({
-  selector: 'app-create-question',
-  templateUrl: './create-question.component.html',
-  styleUrl: './create-question.component.css',
+  selector: 'app-edit-question',
+  templateUrl: './edit-question.component.html',
+  styleUrl: './edit-question.component.css',
 })
-export class CreateQuestionComponent implements OnInit {
+export class EditQuestionComponent {
+  @Input() question!: Questions;
+
   FOR_UPLOAD: any = null;
   activeModal = inject(NgbActiveModal);
   questionForm$: FormGroup;
@@ -81,8 +79,14 @@ export class CreateQuestionComponent implements OnInit {
   ngOnInit(): void {
     this.questionForm$.patchValue({
       category: this.type,
+      question: this.question.question,
+      levelID: this.question.levelID,
+      hint: this.question.hint,
+      answer: this.question.answer,
     });
+    this.choices$ = this.question.choices;
   }
+
   addToChoices() {
     let currentChoice$: string = this.questionForm$.get('choices')?.value ?? '';
     console.log(currentChoice$);
@@ -128,15 +132,14 @@ export class CreateQuestionComponent implements OnInit {
     const category = this.type;
 
     const question: Questions = {
-      id: '',
+      ...this.question,
       levelID: this.questionForm$.get('levelID')?.value ?? '',
       gameID: this.gameID,
       question: questions,
-      image: null,
-      answer,
+      answer: answer,
       choices: this.choices$,
       type: category,
-      createdAt: new Date(),
+
       updatedAt: new Date(),
       hint: hint,
     };
@@ -148,7 +151,7 @@ export class CreateQuestionComponent implements OnInit {
     this.questionService
       .createQuestion(question, file)
       .then((data) => {
-        this.toastr.success('successfully added!');
+        this.toastr.success('successfully Updated!');
       })
       .catch((err) => this.toastr.error(err['message']))
       .finally(() => this.activeModal.close());

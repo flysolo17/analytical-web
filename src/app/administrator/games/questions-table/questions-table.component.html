@@ -23,47 +23,73 @@
     </button>
   </div>
 </div>
-<table class="table table-borderless table-hover">
-  <thead>
-    <tr>
-      <th scope="col" colspan="2">Question</th>
-      <th scope="col">Answer</th>
-      <th scope="col">Created At</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let question of paginatedQuestions">
-      <th scope="row " colspan="2">
-        <div class="d-flex gap-3">
-          <img
-            [src]="question.image"
-            alt="question image"
-            class="me-2 rounded-2"
-            style="width: 50px; height: 50px"
-          />
-          <h6>
-            {{ question.question | slice : 0 : 15
-            }}{{ question.question.length > 15 ? "..." : "" }}
-          </h6>
+<div
+  *ngIf="game.category === 'MEMORY_GAME'; else category"
+  class="container-fluid"
+>
+  <div class="row g-1">
+    <div class="col-4" *ngFor="let question of paginatedQuestions; index as i">
+      <div class="card w-100">
+        <div class="card-header">Question {{ i + 1 }}</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4" *ngFor="let choices of question.choices">
+              <img [src]="choices" width="80px" height="80px" />
+            </div>
+          </div>
         </div>
-      </th>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #category>
+  <table class="table table-borderless table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Question</th>
+        <th scope="col">Answer</th>
+        <th scope="col">Choices</th>
+        <th scope="col">Created At</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let question of paginatedQuestions">
+        <th scope="row ">
+          <div class="d-flex gap-3">
+            <img
+              [src]="question.image"
+              alt="question image"
+              class="me-2 rounded-2"
+              style="width: 50px; height: 50px"
+            />
+            <h6>
+              {{ question.question | slice : 0 : 15
+              }}{{ question.question.length > 15 ? "..." : "" }}
+            </h6>
+          </div>
+        </th>
 
-      <td>{{ question.answer }}</td>
-      <td>
-        {{ question.createdAt.toLocaleDateString() }}
-      </td>
-      <td>
-        <div class="d-flex gap-2">
-          <button class="btn btn-success">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
+        <td>{{ question.answer }}</td>
+        <td>{{ question.choices }}</td>
+        <td>
+          {{ question.createdAt.toLocaleDateString() }}
+        </td>
+        <td>
+          <div class="d-flex gap-2">
+            <button
+              class="btn btn-success"
+              (click)="editQuestion(question, levels)"
+            >
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
 
-          <button class="btn btn-danger" (click)="deleteQuestion(question)">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+            <button class="btn btn-danger" (click)="deleteQuestion(question)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

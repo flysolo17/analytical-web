@@ -18,27 +18,28 @@ import { Router } from '@angular/router';
 export class GamesComponent {
   private modalService = inject(NgbModal);
   quiz$ = this.quizService.getAllQuiz();
-  riddles$ = this.quiz$.pipe(
-    map(
-      (quizzes) => quizzes.filter((quiz) => quiz.category === 'RIDDLES').length
-    )
-  );
-  wordPuzzle$ = this.quiz$.pipe(
+  MATH$ = this.quiz$.pipe(
     map(
       (quizzes) =>
-        quizzes.filter((quiz) => quiz.category === 'WORD_PUZZLE').length
+        quizzes.filter((quiz) => quiz.category === 'MATH_GAME').length
     )
   );
-  rebus$ = this.quiz$.pipe(
+  PUZZLE$ = this.quiz$.pipe(
     map(
       (quizzes) =>
-        quizzes.filter((quiz) => quiz.category === 'REBUS_PUZZLE').length
+        quizzes.filter((quiz) => quiz.category === 'PUZZLE_GAME').length
     )
   );
-  mathLogic$ = this.quiz$.pipe(
+  MEMORY$ = this.quiz$.pipe(
     map(
       (quizzes) =>
-        quizzes.filter((quiz) => quiz.category === 'MATH_LOGIC_PUZZLE').length
+        quizzes.filter((quiz) => quiz.category === 'MEMORY_GAME').length
+    )
+  );
+  QUIZ$ = this.quiz$.pipe(
+    map(
+      (quizzes) =>
+        quizzes.filter((quiz) => quiz.category === 'QUIZ_GAME').length
     )
   );
   admin$: Administrators | null = null;

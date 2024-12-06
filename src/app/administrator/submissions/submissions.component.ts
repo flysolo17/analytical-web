@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
 export class SubmissionsComponent implements OnInit {
   submissions: SubmissionWithStudent[] = []; // assuming your Submission model
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 20;
   paginatedSubmissions: SubmissionWithStudent[] = [];
   searchControl: FormControl = new FormControl('');
   constructor(private submissionService: SubmissionsService) {}
@@ -45,6 +45,7 @@ export class SubmissionsComponent implements OnInit {
   ngOnInit(): void {
     this.submissionService.getSubmissionWithStudent().subscribe((data) => {
       this.submissions = data;
+      console.log(data);
       this.updatePaginatedSubmissions();
     });
     this.searchControl.valueChanges.subscribe(() => {
@@ -57,11 +58,9 @@ export class SubmissionsComponent implements OnInit {
     const filteredSubmissions = this.submissions.filter((submission) => {
       const searchTerm = this.searchControl.value.toLowerCase();
       return (
-        // by game name
         submission.submission.quizInfo?.name
           ?.toLowerCase()
           .includes(searchTerm) ||
-        // by student name
         `${submission.students?.fname.toLowerCase()} ${submission.students?.lname.toLowerCase()}`.includes(
           searchTerm
         )

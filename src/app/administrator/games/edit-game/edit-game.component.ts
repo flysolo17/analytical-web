@@ -47,11 +47,10 @@ export class EditGameComponent {
       const subject: 'MATH' | 'ENGLISH' =
         this.quizForm$.get('subject')?.value ?? 'MATH';
       const category:
-        | 'REBUS_PUZZLE'
-        | 'RIDDLES'
-        | 'WORD_PUZZLE'
-        | 'MATH_LOGIC_PUZZLE' =
-        this.quizForm$.get('category')?.value ?? 'REBUS_PUZZLE';
+        | 'PUZZLE_GAME'
+        | 'MEMORY_GAME'
+        | 'QUIZ_GAME'
+        | 'MATH_GAME' = this.quizForm$.get('category')?.value ?? 'PUZZLE_GAME';
       const levels: number = +this.quizForm$.get('levels')?.value || 10;
       let quiz: Quiz = {
         id: this.quiz.id,
@@ -63,7 +62,7 @@ export class EditGameComponent {
         levels: levels,
         createdAt: this.quiz.createdAt || new Date(),
         visible: this.quiz.visible || false,
-        schoolLevel: this.quizForm$.get('schoolLevel')?.value ?? 'JHS',
+        schoolLevel: this.quizForm$.get('schoolLevel')?.value ?? 'GRADE_11',
       };
 
       if (this.FOR_UPLOAD !== null) {

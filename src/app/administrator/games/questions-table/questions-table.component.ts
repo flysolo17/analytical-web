@@ -10,6 +10,10 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
 import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
 import { Quiz } from '../../../models/quiz/Quiz';
+import { CreateMemoryQuestionComponent } from '../../questions/create-memory-question/create-memory-question.component';
+import { EditGameComponent } from '../edit-game/edit-game.component';
+import { EditMemoryQuestionComponent } from '../../questions/edit-memory-question/edit-memory-question.component';
+import { EditQuestionComponent } from '../../questions/edit-question/edit-question.component';
 
 @Component({
   selector: 'app-questions-table',
@@ -21,7 +25,7 @@ export class QuestionsTableComponent implements OnInit {
   @Input() levels: Levels[] = [];
   questions: Questions[] = []; // assuming your Submission model
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 50;
   paginatedQuestions: Questions[] = [];
   searchControl: FormControl = new FormControl('');
   constructor(
@@ -44,16 +48,23 @@ export class QuestionsTableComponent implements OnInit {
 
   updatePaginatedQuestion(): void {
     const searchTerm = this.searchControl.value.toLowerCase();
+
+    // Filter questions based on the search term
     const filteredSubmissions = this.questions.filter((question) => {
-      const searchTerm = this.searchControl.value.toLowerCase();
       return (
-        // by game name
-        question.question?.toLowerCase().includes(searchTerm)
+        question.question?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        question.levelID?.toLowerCase().includes(searchTerm.toLowerCase())
       );
+    });
+
+    // Sort filtered questions by createdAt in ascending order
+    filteredSubmissions.sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return dateA - dateB;
     });
     const startItem = (this.currentPage - 1) * this.pageSize;
     const endItem = startItem + this.pageSize;
-
     this.paginatedQuestions = filteredSubmissions.slice(startItem, endItem);
   }
 
@@ -76,12 +87,40 @@ export class QuestionsTableComponent implements OnInit {
     });
   }
 
+  editQuestion(question: Questions, levels: Levels[]) {
+    if (this.game.category === 'MEMORY_GAME') {
+      const modal = this.modalService.open(EditMemoryQuestionComponent, {
+        size: 'md',
+      });
+      modal.componentInstance.question = question;
+      modal.componentInstance.levels = levels;
+      modal.componentInstance.type = this.game.category;
+      modal.componentInstance.gameID = this.game.id;
+    } else {
+      const modal = this.modalService.open(EditQuestionComponent, {
+        size: 'xl',
+      });
+      modal.componentInstance.question = question;
+      modal.componentInstance.levels = levels;
+      modal.componentInstance.type = this.game.category;
+      modal.componentInstance.gameID = this.game.id;
+    }
+  }
   createQuestion(levels: Levels[]) {
-    const modal = this.modalService.open(CreateQuestionComponent, {
-      size: 'xl',
-    });
-    modal.componentInstance.levels = levels;
-    modal.componentInstance.type = this.game.category;
-    modal.componentInstance.gameID = this.game.id;
+    if (this.game.category === 'MEMORY_GAME') {
+      const modal = this.modalService.open(CreateMemoryQuestionComponent, {
+        size: 'md',
+      });
+      modal.componentInstance.levels = levels;
+      modal.componentInstance.type = this.game.category;
+      modal.componentInstance.gameID = this.game.id;
+    } else {
+      const modal = this.modalService.open(CreateQuestionComponent, {
+        size: 'xl',
+      });
+      modal.componentInstance.levels = levels;
+      modal.componentInstance.type = this.game.category;
+      modal.componentInstance.gameID = this.game.id;
+    }
   }
 }

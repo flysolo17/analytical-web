@@ -18,6 +18,7 @@ import { StudentWithSubmissions } from '../../../models/students/StudentWithSubm
 import { SubmissionsService } from '../../../services/submissions.service';
 import { SubmissionWithStudent } from '../../../models/submissions/SubmissionWithStudent';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { CreateMemoryQuestionComponent } from '../../questions/create-memory-question/create-memory-question.component';
 
 export interface QuestionsWithLevels {
   question: Questions;
@@ -89,15 +90,9 @@ export class ViewQuizComponent implements OnInit {
     });
   }
 
-  createQuestion(levels: Levels[]) {
-    this.quiz$?.subscribe((data) => {
-      const modal = this.modalService.open(CreateQuestionComponent, {
-        size: 'xl',
-      });
-      modal.componentInstance.levels = levels;
-      modal.componentInstance.type = data.category;
-      modal.componentInstance.gameID = data.id;
-    });
+  showDialog(category: Questions['type']) {
+    if (category === 'MEMORY_GAME') {
+    }
   }
 
   getLevelName(levelID: string): Observable<string> {

@@ -30,6 +30,10 @@ import { SubmissionsTableComponent } from './games/submissions-table/submissions
 import { EditGameComponent } from './games/edit-game/edit-game.component';
 import { DeleteConfirmationComponent } from './games/delete-confirmation/delete-confirmation.component';
 import { QuestionsTableComponent } from './games/questions-table/questions-table.component';
+import { CreateMemoryQuestionComponent } from './questions/create-memory-question/create-memory-question.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EditQuestionComponent } from './questions/edit-question/edit-question.component';
+import { EditMemoryQuestionComponent } from './questions/edit-memory-question/edit-memory-question.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +54,7 @@ import { QuestionsTableComponent } from './games/questions-table/questions-table
     EditGameComponent,
     DeleteConfirmationComponent,
     QuestionsTableComponent,
+    CreateMemoryQuestionComponent,
   ],
   imports: [
     CommonModule,
@@ -57,6 +62,7 @@ import { QuestionsTableComponent } from './games/questions-table/questions-table
     NgChartsModule,
     NgbDropdownModule,
     NgbPagination,
+    ReactiveFormsModule,
     NgbNavModule,
     AsyncPipe,
   ],

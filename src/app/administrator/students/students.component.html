@@ -10,7 +10,7 @@
           <th scope="col">#</th>
           <th scope="col">Fullname</th>
           <th scope="col">Email</th>
-          <th scope="col">School Level</th>
+          <th scope="col">Grade Level</th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +28,7 @@
             </div>
           </td>
           <td>{{ student.email }}</td>
-          <td>{{ student.schoolLevel }}</td>
+          <td>{{ student.schoolLevel.replace("_", " ") }}</td>
         </tr>
       </tbody>
     </table>

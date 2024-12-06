@@ -40,6 +40,8 @@ import { AdministratorModule } from './administrator/administrator.module';
 import { ImagePickerComponent } from './custom/image-picker/image-picker.component';
 import { PrimaryButtonComponent } from './custom/primary-button/primary-button.component';
 import { ChangePasswordComponent } from './auth/change-password/change-password.component';
+import { EditQuestionComponent } from './administrator/questions/edit-question/edit-question.component';
+import { EditMemoryQuestionComponent } from './administrator/questions/edit-memory-question/edit-memory-question.component';
 
 @NgModule({
   declarations: [
@@ -52,8 +54,10 @@ import { ChangePasswordComponent } from './auth/change-password/change-password.
     RegisterComponent,
     PrimaryButtonComponent,
     ForgotPasswordComponent,
-    ImagePickerComponent,
+    EditQuestionComponent,
+    EditMemoryQuestionComponent,
     EditProfileComponent,
+    ImagePickerComponent,
     ChangePasswordComponent,
   ],
   imports: [
@@ -61,7 +65,7 @@ import { ChangePasswordComponent } from './auth/change-password/change-password.
     AppRoutingModule,
     NgChartsModule,
     FormsModule,
-
+    ReactiveFormsModule,
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,

@@ -1,4 +1,5 @@
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { SchoolLevel } from './GradeLevel';
 
 export interface Students {
   id: string;
@@ -7,7 +8,7 @@ export interface Students {
   mname: string;
   lname: string;
   profile: string;
-  schoolLevel: 'SHS' | 'JHS';
+  schoolLevel: SchoolLevel;
 }
 export const studentConverter = {
   toFirestore: (data: Students) => data,

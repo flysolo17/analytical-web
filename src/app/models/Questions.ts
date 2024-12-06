@@ -9,7 +9,7 @@ export interface Questions {
   hint: string;
   answer: string;
   choices: string[];
-  type: 'REBUS_PUZZLE' | 'RIDDLES' | 'WORD_PUZZLE' | 'MATH_LOGIC_PUZZLE';
+  type: 'QUIZ_GAME' | 'PUZZLE_GAME' | 'MEMORY_GAME' | 'MATH_GAME';
   createdAt: Date;
   updatedAt: Date;
 }

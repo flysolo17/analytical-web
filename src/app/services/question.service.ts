@@ -80,6 +80,20 @@ export class QuestionService {
     }
     await setDoc(questionRef, question);
   }
+  async createMemoryQuestion(question: Questions, files: File[]) {
+    const questionRef = doc(
+      collection(this.firestore, 'questions')
+    ).withConverter(questionConverter);
+    question.id = questionRef.id;
+    const choices: string[] = await Promise.all(
+      files.map(async (file) => {
+        const result = await this.uploadFile(file);
+        return result;
+      })
+    );
+    question.choices = choices;
+    await setDoc(questionRef, question);
+  }
 
   getAllQuestionByGameID(gameID: string): Observable<Questions[]> {
     const q = query(

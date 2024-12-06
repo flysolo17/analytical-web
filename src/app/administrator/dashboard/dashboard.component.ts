@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { SubmissionsService } from '../../services/submissions.service';
 import { QuizService } from '../../services/quiz.service';
@@ -49,60 +49,34 @@ export class DashboardComponent implements OnInit {
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     )
   );
-
   averageScorePerGame$ = this.submissions$.pipe(
-    map((data: Submissions[]) => {
-      let math = data.filter((e) => e.quizInfo?.type === 'MATH');
-      let english = data.filter((e) => e.quizInfo?.type === 'ENGLISH');
-      let mathMatches = math.length;
-      let englishMatches = english.length;
+    map((submissions) => {
+      const categories = ['MATH', 'ENGLISH'] as const;
 
-      //compute average score per game
-      let mathTotalScore = 0;
-      let mathTotalPlayerEarning = 0;
-      math.forEach((e) => {
-        mathTotalScore +=
-          (e.quizInfo?.levels?.points ?? 0) *
-          (e.quizInfo?.levels?.questions ?? 0);
-        mathTotalPlayerEarning += e.performance.earning;
+      return categories.map((category) => {
+        const filteredSubmissions = submissions.filter(
+          (s) => s.quizInfo?.type === category
+        );
+        const totalMatches = filteredSubmissions.length;
+        const totalEarnings = filteredSubmissions.reduce(
+          (sum, s) => sum + s.performance.earning,
+          0
+        );
+        const averagePerSubmission =
+          totalMatches > 0 ? totalEarnings / totalMatches : 0;
+
+        return { category, averagePerSubmission, totalMatches };
       });
-
-      //compute average score per game
-      let englishTotalScore = 0;
-      let englishTotalPlayerEarning = 0;
-      english.forEach((e) => {
-        englishTotalScore +=
-          (e.quizInfo?.levels?.points ?? 0) *
-          (e.quizInfo?.levels?.questions ?? 0);
-        englishTotalPlayerEarning += e.performance.earning;
-      });
-
-      // Calculate average score per game
-      let mathAveragePerGame =
-        mathMatches > 0 ? mathTotalPlayerEarning / mathMatches : 0;
-      let englishAveragePerGame =
-        englishMatches > 0 ? englishTotalPlayerEarning / englishMatches : 0;
-      return [
-        {
-          category: 'MATH',
-          averagePerSubmission: mathAveragePerGame,
-          totalMatches: mathMatches,
-        },
-        {
-          category: 'ENGLISH',
-          averagePerSubmission: englishAveragePerGame,
-          totalMatches: englishMatches,
-        },
-      ];
     })
   );
+
   public barChartData: ChartData<'bar'> = {
     labels: ['MATH', 'ENGLISH'],
     datasets: [
       {
         data: [],
         label: 'Average score per game',
-        backgroundColor: ['#FF6384', '#36A2EB'], // Optional: Add colors for the bars
+        backgroundColor: ['#FF6384', '#36A2EB'],
       },
     ],
   };
@@ -113,11 +87,10 @@ export class DashboardComponent implements OnInit {
   public barChartType: any = 'bar';
 
   top10Submissions$: Observable<Submissions[]> = this.submissions$.pipe(
-    map(
-      (submissions) =>
-        submissions
-          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()) // Sort by createdAt in descending order
-          .slice(0, 8) // Get the top 10 submissions
+    map((submissions) =>
+      submissions
+        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+        .slice(0, 8)
     )
   );
 
@@ -215,7 +188,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private submissionService: SubmissionsService,
-    private quizService: QuizService
+    private quizService: QuizService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -223,6 +197,7 @@ export class DashboardComponent implements OnInit {
       this.barChartData.datasets[0].data = categories.map(
         (category) => category.averagePerSubmission
       );
+      this.cdr.detectChanges();
     });
 
     this.mostPlayedCategories$.subscribe((data) => {
@@ -230,13 +205,7 @@ export class DashboardComponent implements OnInit {
       this.pieChartData.datasets[0].data = data.map(
         (category) => category.total
       );
+      this.cdr.detectChanges();
     });
   }
-  // public chartClicked(e: any): void {
-  //   console.log(e);
-  // }
-
-  // public chartHovered(e: any): void {
-  //   console.log(e);
-  // }
 }
