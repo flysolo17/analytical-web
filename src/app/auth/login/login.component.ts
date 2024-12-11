@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { AuthService } from '../../services/auth.service';
 import { Administrators } from '../../models/Administrator';
+import { Auth, authState } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading: boolean = false;
   modalService = inject(NgbModal);
+  auth = inject(Auth);
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -30,7 +32,23 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
     });
   }
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+    let user = this.auth.currentUser;
+    if (user !== null) {
+      this.getAdminInfo(user.email ?? '');
+    }
+  }
+  getAdminInfo(email: string) {
+    this.authService.listenToAdmin(email).subscribe((data) => {
+      this.authService.setAdmin(data);
+      if (data !== null) {
+        this.router.navigate(['main']);
+      } else {
+        this.router.navigate(['login']);
+      }
+    });
+  }
   onSubmit() {
     this.isLoading = true;
     if (this.loginForm.valid) {
@@ -77,6 +95,7 @@ export class LoginComponent implements OnInit {
       .then((task) => {
         this.toastr.success('Successfully Logged in');
         this.authService.setAdmin(administrator);
+        this.router.navigate(['main']);
       })
       .catch((err: FirebaseError) => {
         this.toastr.success(err['message']);

@@ -5,6 +5,12 @@ export interface Administrators {
   name: string;
   email: string;
   profile: string;
+  type: AdminType;
+}
+
+export enum AdminType {
+  TERACHER = 'TEACHER',
+  ADMINISTRATORS = 'ADMINISTRATOR',
 }
 
 export const administratorConverter = {

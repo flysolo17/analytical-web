@@ -13,13 +13,7 @@ export class AppComponent {
   title = 'analytical';
   auth = inject(Auth);
 
-  constructor(private authService: AuthService, private router: Router) {
-    authState(this.auth).subscribe((data) => {
-      if (data != null) {
-        this.getAdminInfo(data.email ?? '');
-      }
-    });
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   getAdminInfo(email: string) {
     this.authService.listenToAdmin(email).subscribe((data) => {

@@ -30,8 +30,6 @@ export class CreateMemoryQuestionComponent implements OnInit {
 
     if (input.files) {
       const files = Array.from(input.files);
-      this.selectedImages = [];
-      this.selectedImagesFilesForUpload = [];
 
       files.forEach((file) => {
         if (file.type.startsWith('image/')) {

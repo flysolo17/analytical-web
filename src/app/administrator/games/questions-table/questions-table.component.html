@@ -28,13 +28,51 @@
   class="container-fluid"
 >
   <div class="row g-1">
-    <div class="col-4" *ngFor="let question of paginatedQuestions; index as i">
+    <div class="col-4" *ngFor="let question of questions; index as i">
       <div class="card w-100">
-        <div class="card-header">Question {{ i + 1 }}</div>
+        <div
+          class="card-header d-flex align-items-center justify-content-between"
+        >
+          <h5 class="mb-0">Question {{ i + 1 }}</h5>
+
+          <div class="d-flex align-items-center">
+            <button
+              [disabled]="question.choices.length == 8"
+              class="btn btn-sm btn-dark"
+              (click)="selectQuestion(question)"
+              onclick="document.getElementById('imageInput').click();"
+            >
+              <i class="fa-solid fa-plus"></i>
+            </button>
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              multiple
+              style="display: none"
+              (change)="handleImageSelection($event)"
+            />
+          </div>
+        </div>
+
         <div class="card-body">
-          <div class="row">
+          <div class="row g-3">
             <div class="col-4" *ngFor="let choices of question.choices">
-              <img [src]="choices" width="80px" height="80px" />
+              <div class="image-box position-relative">
+                <button
+                  class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                  (click)="deleteChoice(question.id, choices)"
+                  title="Remove Image"
+                >
+                  &times;
+                </button>
+                <img
+                  [src]="choices"
+                  class="img-fluid rounded"
+                  alt="Preview"
+                  style="height: 100px; width: 100px"
+                />
+              </div>
             </div>
           </div>
         </div>

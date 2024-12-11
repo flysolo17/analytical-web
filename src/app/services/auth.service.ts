@@ -17,10 +17,14 @@ import {
   getDocs,
   limit,
   query,
+  setDoc,
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { signInWithEmailAndPassword } from '@firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from '@firebase/auth';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import {
   Administrators,
@@ -41,6 +45,22 @@ export class AuthService {
 
   login(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  async register(admin: Administrators, password: string) {
+    const result = await createUserWithEmailAndPassword(
+      this.auth,
+      admin.email,
+      password
+    );
+
+    admin.id = result.user?.uid;
+    return setDoc(
+      doc(this.firestore, ADMINISTRATOR_COLLECTION, admin.id).withConverter(
+        administratorConverter
+      ),
+      admin
+    );
   }
 
   logout() {

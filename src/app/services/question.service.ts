@@ -167,4 +167,35 @@ export class QuestionService {
         console.error('Error fetching questions:', error);
       });
   }
+
+  async addChoices(questionID: string, files: File[]) {
+    const arr: string[] = [];
+
+    for (const file of files) {
+      const result = await this.uploadFile(file);
+      arr.push(result);
+    }
+
+    return updateDoc(
+      doc(this.firestore, QUESTION_COLLECTION, questionID).withConverter(
+        questionConverter
+      ),
+      {
+        choices: arrayUnion(...arr),
+      }
+    );
+  }
+  deleteChoice(questionID: string, choice: string) {
+    const choiceRef = ref(this.storage, choice);
+    deleteObject(choiceRef);
+
+    return updateDoc(
+      doc(this.firestore, QUESTION_COLLECTION, questionID).withConverter(
+        questionConverter
+      ),
+      {
+        choices: arrayRemove(choice),
+      }
+    );
+  }
 }

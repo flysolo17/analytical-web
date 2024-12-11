@@ -34,6 +34,11 @@ export class QuestionsTableComponent implements OnInit {
     private modalService: NgbModal
   ) {}
 
+  selectedQuestion: Questions | null = null;
+  selectQuestion(question: Questions) {
+    this.selectedQuestion = question;
+    console.log(question.id);
+  }
   ngOnInit(): void {
     this.questionService
       .getAllQuestionByGameID(this.game.id)
@@ -122,5 +127,24 @@ export class QuestionsTableComponent implements OnInit {
       modal.componentInstance.type = this.game.category;
       modal.componentInstance.gameID = this.game.id;
     }
+  }
+
+  handleImageSelection(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input && input.files) {
+      const files = Array.from(input.files);
+
+      if (this.selectQuestion == null) return;
+      this.questionService
+        .addChoices(this.selectedQuestion?.id!!, files)
+        .then(() => this.toastr.success('successfully added'))
+        .catch((err) => this.toastr.error(err['message']));
+    }
+  }
+  deleteChoice(questionID: string, choice: string) {
+    this.questionService
+      .deleteChoice(questionID, choice)
+      .then(() => this.toastr.success('successfully deleted'))
+      .catch((err) => this.toastr.error(err['message']));
   }
 }
