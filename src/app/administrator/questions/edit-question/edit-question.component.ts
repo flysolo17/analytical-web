@@ -139,7 +139,6 @@ export class EditQuestionComponent {
       answer: answer,
       choices: this.choices$,
       type: category,
-
       updatedAt: new Date(),
       hint: hint,
     };
@@ -149,7 +148,7 @@ export class EditQuestionComponent {
 
   saveQuestion(question: Questions, file: File) {
     this.questionService
-      .createQuestion(question, file)
+      .updateQuestion(question, file)
       .then((data) => {
         this.toastr.success('successfully Updated!');
       })

@@ -9,7 +9,7 @@
             height="50px"
           />
           <div class="">
-            <h5>{{ PUZZLE$ | async }}</h5>
+            <h5>{{ filterByCategory("PUZZLE_GAME") }}</h5>
             <p class="text-secondary">Puzzle Game</p>
           </div>
         </div>
@@ -24,8 +24,8 @@
             height="50px"
           />
           <div class="">
-            <h5>{{ QUIZ$ | async }}</h5>
-            <p class="text-secondary">Quiz Puzzle</p>
+            <h5>{{ filterByCategory("QUIZ_GAME") }}</h5>
+            <p class="text-secondary">Quiz Game</p>
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
             height="50px"
           />
           <div class="">
-            <h5>{{ MATH$ | async }}</h5>
+            <h5>{{ filterByCategory("MATH_GAME") }}</h5>
             <p class="text-secondary">Math Game</p>
           </div>
         </div>
@@ -55,7 +55,7 @@
             height="50px"
           />
           <div class="">
-            <h5>{{ MEMORY$ | async }}</h5>
+            <h5>{{ filterByCategory("MEMORY_GAME") }}</h5>
 
             <p class="text-secondary">Memory Game</p>
           </div>
@@ -69,6 +69,7 @@
       <div class="input-group w-50">
         <input
           type="text"
+          [formControl]="searchText"
           class="search-input w-100"
           placeholder="Search games..."
         />
@@ -76,7 +77,7 @@
       <button class="btn btn-dark" (click)="createQuiz()">Create Game</button>
     </div>
     <div class="row row-cols-4 mt-3">
-      <div class="col" *ngFor="let quiz of quiz$ | async">
+      <div class="col" *ngFor="let quiz of filteredQuiz$">
         <div class="quiz-card rounded" (click)="viewGame(quiz.id)">
           <img
             [src]="quiz.cover_photo"

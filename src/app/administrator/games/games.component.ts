@@ -1,6 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription, map } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 
 import { QuizService } from '../../services/quiz.service';
 import { CreateQuizComponent } from './create-quiz/create-quiz.component';
@@ -9,39 +17,20 @@ import { ToastrService } from 'ngx-toastr';
 import { Administrators } from '../../models/Administrator';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { Quiz } from '../../models/quiz/Quiz';
 
 @Component({
   selector: 'app-games',
   templateUrl: './games.component.html',
   styleUrl: './games.component.css',
 })
-export class GamesComponent {
+export class GamesComponent implements OnInit {
   private modalService = inject(NgbModal);
-  quiz$ = this.quizService.getAllQuiz();
-  MATH$ = this.quiz$.pipe(
-    map(
-      (quizzes) =>
-        quizzes.filter((quiz) => quiz.category === 'MATH_GAME').length
-    )
-  );
-  PUZZLE$ = this.quiz$.pipe(
-    map(
-      (quizzes) =>
-        quizzes.filter((quiz) => quiz.category === 'PUZZLE_GAME').length
-    )
-  );
-  MEMORY$ = this.quiz$.pipe(
-    map(
-      (quizzes) =>
-        quizzes.filter((quiz) => quiz.category === 'MEMORY_GAME').length
-    )
-  );
-  QUIZ$ = this.quiz$.pipe(
-    map(
-      (quizzes) =>
-        quizzes.filter((quiz) => quiz.category === 'QUIZ_GAME').length
-    )
-  );
+  quiz$: Quiz[] = [];
+  filteredQuiz$: Quiz[] = [];
+  searchText = new FormControl('');
+
   admin$: Administrators | null = null;
   constructor(
     private quizService: QuizService,
@@ -54,8 +43,23 @@ export class GamesComponent {
     this.authService.administrator$.subscribe((data) => {
       this.admin$ = data;
     });
-  }
 
+    this.quizService.getAllQuiz().subscribe((data) => {
+      this.quiz$ = data;
+      this.updatedFilteredGames();
+    });
+    this.searchText.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(() => {
+        this.updatedFilteredGames();
+      });
+  }
+  updatedFilteredGames(): void {
+    const searchText = this.searchText.value?.toLowerCase() ?? '';
+    this.filteredQuiz$ = this.quiz$.filter((game) => {
+      return game.title.toLowerCase().includes(searchText);
+    });
+  }
   createQuiz() {
     const modalRef = this.modalService.open(CreateQuizComponent, {
       size: 'lg',
@@ -71,6 +75,15 @@ export class GamesComponent {
     this.router.navigate(['main/games/view', id]);
   }
 
+  filterByCategory(type: Quiz['category']): number {
+    let count = 0;
+    this.quiz$.forEach((e) => {
+      if (e.category === type) {
+        count += 1;
+      }
+    });
+    return count;
+  }
   // quizSize(type: Quiz['category']): Observable<number> {
   //   return this.quiz$.pipe(
   //     map((quizzes) => quizzes.filter((quiz) => quiz.category === type).length)

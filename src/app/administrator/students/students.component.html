@@ -2,6 +2,16 @@
   <div class="w-100 bg-white h-100 rounded-4 p-3">
     <div class="d-flex align-items-center justify-content-between p-3">
       <h5>Students</h5>
+      <div class="box">
+        <div class="input-group" style="width: 400px">
+          <input
+            type="text"
+            [formControl]="searchText$"
+            class="search-input w-100"
+            placeholder="Search students..."
+          />
+        </div>
+      </div>
     </div>
 
     <table class="table table-hover table-borderless">
@@ -14,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let student of students$ | async; index as i">
+        <tr *ngFor="let student of filteredStudents$; index as i">
           <th scope="row">{{ i + 1 }}</th>
           <td>
             <div class="d-flex gap-2 align-items-center">

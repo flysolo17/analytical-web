@@ -78,8 +78,10 @@ export class QuestionService {
     if (file) {
       question.image = await this.uploadFile(file);
     }
+
     await setDoc(questionRef, question);
   }
+
   async createMemoryQuestion(question: Questions, files: File[]) {
     const questionRef = doc(
       collection(this.firestore, 'questions')
